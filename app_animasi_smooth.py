@@ -172,34 +172,25 @@ st.markdown("""
     padding: 16px 20px;
     margin-bottom: 24px;
 ">
-    <div style="
-        color: #DDA5FF;
-        font-size: 12px;
-        letter-spacing: 2px;
-        margin-bottom: 6px;
-    ">NETWORK OVERVIEW</div>
+    <div style="color: #DDA5FF; font-size: 12px;">
+        NETWORK OVERVIEW
+    </div>
 
-    <div style="
-        color: #E8D9F0;
-        font-size: 13px;
-        margin-bottom: 12px;
-    ">Ilustrasi koneksi antarperangkat</div>
+    <div style="color: #E8D9F0; font-size: 13px;">
+        Ilustrasi koneksi antarperangkat
+    </div>
 
     <svg viewBox="0 0 600 145"
          style="width:100%; max-height:160px;"
          xmlns="http://www.w3.org/2000/svg">
+        <line x1="85" y1="72" x2="210" y2="72"
+              stroke="#C412FF" stroke-width="2"/>
+        <line x1="240" y1="72" x2="350" y2="35"
+              stroke="#C412FF" stroke-width="2"/>
+        <line x1="240" y1="72" x2="350" y2="110"
+              stroke="#C412FF" stroke-width="2"/>
 
-        <g stroke="#8540A5" stroke-width="2" fill="none">
-            <path d="M85 72 H210"/>
-            <path d="M240 72 L350 35"/>
-            <path d="M240 72 L350 110"/>
-            <path d="M380 35 L490 20"/>
-            <path d="M380 35 L490 55"/>
-            <path d="M380 110 L490 90"/>
-            <path d="M380 110 L490 125"/>
-        </g>
-
-        <g fill="#42105F" stroke="#C412FF" stroke-width="2">
+        <g fill="#42105F" stroke="#DDA5FF" stroke-width="2">
             <rect x="35" y="52" width="50" height="40" rx="7"/>
             <rect x="210" y="52" width="30" height="40" rx="6"/>
             <rect x="350" y="20" width="30" height="30" rx="6"/>
@@ -207,23 +198,28 @@ st.markdown("""
         </g>
 
         <g fill="#C412FF" stroke="#DDA5FF" stroke-width="1.5">
-            <circle cx="490" cy="20" r="7"/>
-            <circle cx="490" cy="55" r="7"/>
-            <circle cx="490" cy="90" r="7"/>
-            <circle cx="490" cy="125" r="7"/>
+            <circle cx="450" cy="20" r="7"/>
+            <circle cx="450" cy="55" r="7"/>
+            <circle cx="450" cy="90" r="7"/>
+            <circle cx="450" cy="125" r="7"/>
         </g>
 
-        <g fill="#FFFFFF" font-size="11"
-           font-family="Arial, sans-serif"
-           text-anchor="middle">
+        <g stroke="#8540A5" stroke-width="2">
+            <line x1="380" y1="35" x2="450" y2="20"/>
+            <line x1="380" y1="35" x2="450" y2="55"/>
+            <line x1="380" y1="110" x2="450" y2="90"/>
+            <line x1="380" y1="110" x2="450" y2="125"/>
+        </g>
+
+        <g fill="white" font-size="11" text-anchor="middle">
             <text x="60" y="108">Server</text>
             <text x="225" y="108">Router</text>
             <text x="365" y="65">Router</text>
             <text x="365" y="140">Router</text>
-            <text x="535" y="24">PC 1</text>
-            <text x="535" y="59">PC 2</text>
-            <text x="535" y="94">PC 3</text>
-            <text x="535" y="129">PC 4</text>
+            <text x="500" y="24">PC 1</text>
+            <text x="500" y="59">PC 2</text>
+            <text x="500" y="94">PC 3</text>
+            <text x="500" y="129">PC 4</text>
         </g>
     </svg>
 </div>
