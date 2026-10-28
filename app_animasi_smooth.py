@@ -30,8 +30,8 @@ st.markdown("""
     --lavender: #DDA5FF;
     --text: #F6EEFC;
     --muted: #B7A6C4;
-    --green: #F4D77A;
-    --red: #FF647C;
+    --yellow: #FFF912;
+    --red: #F50000;
 }
 
 .stApp {
@@ -411,7 +411,6 @@ def analyze_failure(router_failed):
         "components": components,
     }
 
-
 # ============================================================
 # 6. VISUALISASI GRAF PLOTLY
 # ============================================================
@@ -465,25 +464,26 @@ def draw_network(router_failed=None, step=0):
             name="Koneksi ke server",
         ))
 
+    # Warna dan bentuk perangkat
     groups = {
         "Server": {
             "nodes": [],
-            "color": "#F5C451",
-            "symbol": "diamond",
+            "color": "#38E3FF",
+            "symbol": "circle",
         },
         "Router aktif": {
             "nodes": [],
             "color": "#B832F0",
-            "symbol": "square",
+            "symbol": "circle",
         },
         "Komputer terhubung": {
             "nodes": [],
-            "color": "#38D996",
+            "color": "#FFF912",
             "symbol": "circle",
         },
         "Komputer terputus": {
             "nodes": [],
-            "color": "#FF647C",
+            "color": "#F50000",
             "symbol": "circle",
         },
     }
@@ -516,7 +516,7 @@ def draw_network(router_failed=None, step=0):
             marker=dict(
                 size=25 if group_name == "Server" else 21,
                 color=info["color"],
-                symbol=info["symbol"],
+                symbol="circle",
                 line=dict(color="#FFFFFF", width=1),
             ),
             name=group_name,
@@ -533,12 +533,12 @@ def draw_network(router_failed=None, step=0):
             mode="markers+text",
             text=[router_failed + " MATI"],
             textposition="top center",
-            textfont=dict(color="#FF8797", size=11),
+            textfont=dict(color="#F50000", size=11),
             marker=dict(
                 size=29,
-                color="#FF647C",
-                symbol="x",
-                line=dict(color="#FF647C", width=3),
+                color="#F50000",
+                symbol="circle",
+                line=dict(color="#F50000", width=3),
             ),
             name="Router gagal",
             hovertemplate=(
@@ -589,7 +589,6 @@ def draw_network(router_failed=None, step=0):
     )
 
     return fig
-
 
 # ============================================================
 # 7. SIDEBAR PENGATURAN
@@ -647,9 +646,9 @@ with st.sidebar:
 
     st.markdown("""
     <div class="small-note">
-        🟡 Server<br>
+        🔵 Server<br>
         🟣 Router aktif<br>
-        🟢 Komputer terhubung<br>
+        🟡 Komputer terhubung<br>
         🔴 Router gagal / perangkat terputus<br>
         ┄ Jalur tanpa akses ke server
     </div>
@@ -657,7 +656,6 @@ with st.sidebar:
 
     st.divider()
     st.caption("Network Blackout · Graph Simulation")
-
 
 # ============================================================
 # 8. STATUS DAN METRIK
@@ -756,6 +754,8 @@ st.plotly_chart(
     key="network_plot",
 )
 
+
+```python
 
 # ============================================================
 # 10. ANIMASI JARINGAN SVG
@@ -873,10 +873,10 @@ def make_smooth_html(router_failed, step):
         margin-top:12px;
         line-height:1.8;
     ">
-        <span>🟡 Server</span>
+        <span>🔵 Server</span>
         <span>🟣 Router aktif</span>
-        <span>🟢 Komputer terhubung</span>
-        <span>🔴 Router gagal / komputer terputus</span>
+        <span>🟡 Komputer terhubung</span>
+        <span>🔴 Router gagal / perangkat terputus</span>
     </div>
 
     <div style="
@@ -929,32 +929,32 @@ data.edges.forEach(edge => {
     });
 });
 
-// Menggambar perangkat dan label.
+// Menggambar perangkat dengan warna yang sudah disamakan.
 data.nodes.forEach(node => {
-    const color = node.failed
-        ? "#FF647C"
+    const color = node.failed || !node.active
+        ? "#F50000"
         : node.type === "server"
-            ? "#F5C451"
+            ? "#38E3FF"
             : node.type === "router"
                 ? "#B832F0"
-                : node.active
-                    ? "#38D996"
-                    : "#FF647C";
+                : "#FFF912";
 
     const radius = node.type === "server" ? 19 : 14;
 
+    // Lingkaran putus-putus menandai router yang gagal.
     if (node.failed) {
         element("circle", {
             cx: X(node.x),
             cy: Y(node.y),
             r: 25,
             fill: "none",
-            stroke: "#FF647C",
+            stroke: "#F50000",
             "stroke-width": 2,
             "stroke-dasharray": "5 4"
         });
     }
 
+    // Efek cahaya di belakang perangkat.
     element("circle", {
         cx: X(node.x),
         cy: Y(node.y),
@@ -963,6 +963,7 @@ data.nodes.forEach(node => {
         opacity: 0.12
     });
 
+    // Semua perangkat berbentuk lingkaran.
     element("circle", {
         cx: X(node.x),
         cy: Y(node.y),
@@ -987,7 +988,13 @@ data.nodes.forEach(node => {
         x: X(node.x),
         y: Y(node.y) + radius + 16,
         "text-anchor": "middle",
-        fill: node.failed ? "#FF8797" : "#DDA5FF",
+        fill: node.failed
+            ? "#F50000"
+            : node.type === "server"
+                ? "#38E3FF"
+                : node.type === "router"
+                    ? "#DDA5FF"
+                    : "#FFF912",
         "font-size": 10,
         "font-family": "Arial, sans-serif"
     });
@@ -1113,7 +1120,7 @@ components.html(
     height=690,
     scrolling=False,
 )
-
+```
 
 # ============================================================
 # 11. ANALISIS OTOMATIS
