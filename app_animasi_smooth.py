@@ -79,18 +79,21 @@ div[data-baseweb="select"] > div {
 }
 
 .network-banner {
+    .network-banner {
     background:
         radial-gradient(
-            ellipse at 82% 45%,
-            #42105F 0%,
-            #180821 38%,
-            #050505 78%
+            ellipse at 85% 35%,
+            rgba(169, 0, 222, 0.30) 0%,
+            rgba(24, 8, 33, 0.65) 38%,
+            #050505 80%
         );
-    border: 1px solid #A900DE;
+    border: 1px solid #6B2B86;
     border-radius: 18px;
     padding: 32px;
     margin: 8px 0 28px 0;
-    box-shadow: 0 0 24px rgba(196, 18, 255, 0.10);
+    box-shadow: 0 0 25px rgba(196, 18, 255, 0.08);
+    position: relative;
+    overflow: hidden;
 }
 
 .network-banner h1 {
