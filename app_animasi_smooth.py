@@ -115,13 +115,11 @@ st.markdown("""
 <div class="network-banner">
     <div style="
         font-size: 12px;
-        font-weight: 700;
+        font-weight: bold;
         letter-spacing: 3px;
-        color: #c4b5fd;
+        color: #c084fc;
         margin-bottom: 8px;
-    ">
-        PROYEK 05
-    </div>
+    ">PROYEK 05</div>
 
     <h1>🌐 Network Blackout</h1>
 
