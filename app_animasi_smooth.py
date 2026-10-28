@@ -11,6 +11,119 @@ st.set_page_config(
     page_icon="🌐",
     layout="wide"
 )
+# ==========================================
+# TEMA VISUAL NETWORK BLACKOUT
+# ==========================================
+
+st.markdown("""
+<style>
+.stApp {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+[data-testid="stHeader"] {
+    background-color: #000000;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #100B14;
+    border-right: 1px solid #49235A;
+}
+
+h1, h2, h3 {
+    color: #DDA5FF;
+}
+
+div[data-testid="stMetric"] {
+    background: #100B14;
+    border: 1px solid #49235A;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+div.stButton > button {
+    background: #A900DE;
+    color: white;
+    border: 1px solid #C412FF;
+    border-radius: 9px;
+}
+
+div.stButton > button:hover {
+    background: #C412FF;
+    color: white;
+}
+
+.network-banner {
+    background:
+        radial-gradient(ellipse at 80% 50%,
+            #42105F 0%, #180821 35%, #050505 75%);
+    border: 1px solid #A900DE;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 24px;
+}
+
+.network-banner h1 {
+    color: white;
+    font-size: 42px;
+    margin: 0;
+}
+
+.network-banner h1 span {
+    color: #C412FF;
+}
+
+.network-banner p {
+    color: #E8D9F0;
+    line-height: 1.7;
+}
+
+.network-credit {
+    color: #DDA5FF;
+    font-size: 13px;
+    border-left: 3px solid #C412FF;
+    padding-left: 12px;
+    margin-top: 18px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+# ==========================================
+# BANNER UTAMA
+# ==========================================
+
+st.markdown("""
+<div class="network-banner">
+    <div style="color:#C412FF; font-size:12px;
+                letter-spacing:3px; font-weight:bold;">
+        GRAPH SIMULATION PROJECT
+    </div>
+
+    <h1>NETWORK <span>BLACKOUT</span></h1>
+
+    <p style="font-size:18px;">
+        Simulasi dan Analisis Kegagalan Jaringan
+    </p>
+
+    <p>
+        Mempelajari dampak kegagalan router terhadap
+        konektivitas komputer ke server melalui visualisasi graf.
+    </p>
+
+    <div style="color:#DDA5FF; font-size:13px;">
+        ◈ Visualisasi Graf &nbsp; | &nbsp;
+        ◈ Simulasi Kegagalan &nbsp; | &nbsp;
+        ◈ Analisis Konektivitas
+    </div>
+
+    <div class="network-credit">
+        Developed by <b>Azzah Fatimatu Zahrah</b><br>
+        240601110019
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ==========================================
 # 1. MEMBANGUN TOPOLOGI JARINGAN
