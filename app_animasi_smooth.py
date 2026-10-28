@@ -113,7 +113,18 @@ hr {
 
 st.markdown("""
 <div class="network-banner">
+    <div style="
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: #c4b5fd;
+        margin-bottom: 8px;
+    ">
+        PROYEK 05
+    </div>
+
     <h1>🌐 Network Blackout</h1>
+
     <p>
         Simulasi kegagalan router, analisis konektivitas,
         dan visualisasi dampak gangguan pada jaringan komputer.
