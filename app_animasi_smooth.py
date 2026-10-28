@@ -79,9 +79,7 @@ div[data-baseweb="select"] > div {
 }
 
 .network-banner {
-    .network-banner {
-   .network-banner {
-    background:
+ background:
         radial-gradient(
             ellipse at 82% 45%,
             #42105F 0%,
