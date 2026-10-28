@@ -248,14 +248,15 @@ footer {
 """, unsafe_allow_html=True)
 
 
+
 # ============================================================
 # 3. BANNER UTAMA
 # ============================================================
 st.markdown("""
-<div class="project-label">PROYEK 05</div>
+<div class="network-banner">
+    <div class="project-label">PROYEK 05</div>
 
-<div class="banner">
-    <div class="banner-eyebrow">🌐 GRAPH SIMULATION PROJECT</div>
+    <div class="banner-tag">🌐 GRAPH SIMULATION PROJECT</div>
 
     <h1>NETWORK <span>BLACKOUT</span></h1>
 
@@ -283,6 +284,7 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 # ============================================================
 # 4. MEMBANGUN TOPOLOGI JARINGAN
