@@ -247,44 +247,42 @@ footer {
 </style>
 """, unsafe_allow_html=True)
 
-
-
 # ============================================================
 # 3. BANNER UTAMA
 # ============================================================
 st.markdown("""
 <div class="network-banner">
     <div class="project-label">PROYEK 05</div>
-
     <div class="banner-tag">🌐 GRAPH SIMULATION PROJECT</div>
-
-    <h1>NETWORK <span>BLACKOUT</span></h1>
-
-    <p style="font-size:18px;">
-        Simulasi dan Analisis Kegagalan Jaringan
-    </p>
-
-    <p>
-        Pelajari bagaimana kegagalan router memengaruhi konektivitas
-        komputer menuju server. Amati perubahan topologi, identifikasi
-        perangkat yang kehilangan akses, dan bandingkan dampak
-        kegagalan pada setiap router.
-    </p>
-
-    <div class="banner-features">
-        <span class="banner-feature">◈ Visualisasi Graf</span>
-        <span class="banner-feature">◈ Simulasi Kegagalan</span>
-        <span class="banner-feature">◈ Animasi Jaringan</span>
-        <span class="banner-feature">◈ Analisis Konektivitas</span>
-    </div>
-
-    <div class="network-credit">
-        Developed by <b>Azzah Fatimatu Zahrah</b><br>
-        240601110019
-    </div>
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown(
+    "# NETWORK BLACKOUT"
+)
+
+st.markdown(
+    "### Simulasi dan Analisis Kegagalan Jaringan"
+)
+
+st.write(
+    "Pelajari bagaimana kegagalan router memengaruhi konektivitas "
+    "komputer menuju server. Amati perubahan topologi, identifikasi "
+    "perangkat yang kehilangan akses, dan bandingkan dampak "
+    "kegagalan pada setiap router."
+)
+
+st.markdown(
+    "◈ Visualisasi Graf　 ◈ Simulasi Kegagalan　 "
+    "◈ Animasi Jaringan　 ◈ Analisis Konektivitas"
+)
+
+st.markdown("""
+<div class="network-credit">
+    Developed by <b>Azzah Fatimatu Zahrah</b><br>
+    240601110019
+</div>
+""", unsafe_allow_html=True)
 
 # ============================================================
 # 4. MEMBANGUN TOPOLOGI JARINGAN
@@ -1275,66 +1273,48 @@ st.plotly_chart(
     config={"displayModeBar": False},
 )
 
-
 # ============================================================
 # 13. INTERPRETASI DAN BATASAN
 # ============================================================
 st.markdown("## 📘 Memahami Hasil Simulasi")
 
-st.markdown("""
-<div class="section-card">
-    <h4>1. Bagaimana konektivitas dihitung?</h4>
-    <p>
-        Jaringan direpresentasikan sebagai graf: perangkat menjadi
-        simpul (node), sedangkan koneksi antarperangkat menjadi sisi
-        (edge). Ketika router gagal, simpul router tersebut dihapus
-        dari salinan graf. Program kemudian mencari komponen
-        terhubung yang memuat server.
-    </p>
+with st.container(border=True):
+    st.markdown("### 1. Bagaimana konektivitas dihitung?")
+    st.write(
+        "Jaringan direpresentasikan sebagai graf: perangkat menjadi "
+        "simpul (node), sedangkan koneksi antarperangkat menjadi sisi "
+        "(edge). Ketika router gagal, simpul router tersebut dihapus "
+        "dari salinan graf. Program kemudian mencari komponen "
+        "terhubung yang memuat server."
+    )
 
-    <h4>2. Apa arti komputer terhubung?</h4>
-    <p>
-        Komputer dianggap terhubung apabila masih berada dalam
-        komponen graf yang sama dengan server. Komputer yang berada
-        di komponen lain dianggap kehilangan akses ke server,
-        walaupun mungkin masih terhubung dengan perangkat lain.
-    </p>
+    st.markdown("### 2. Apa arti komputer terhubung?")
+    st.write(
+        "Komputer dianggap terhubung apabila masih berada dalam "
+        "komponen graf yang sama dengan server. Komputer yang berada "
+        "di komponen lain dianggap kehilangan akses ke server, "
+        "walaupun mungkin masih terhubung dengan perangkat lain."
+    )
 
-    <h4>3. Mengapa kegagalan router memberikan dampak berbeda?</h4>
-    <p>
-        Setiap router memiliki posisi dan koneksi yang berbeda.
-        Router yang menjadi bagian penting jalur menuju server
-        dapat menyebabkan lebih banyak komputer kehilangan akses.
-        Jalur alternatif dapat membantu mempertahankan konektivitas.
-    </p>
+    st.markdown(
+        "### 3. Mengapa kegagalan router memberikan dampak berbeda?"
+    )
+    st.write(
+        "Setiap router memiliki posisi dan koneksi yang berbeda. "
+        "Router yang menjadi bagian penting jalur menuju server "
+        "dapat menyebabkan lebih banyak komputer kehilangan akses. "
+        "Jalur alternatif dapat membantu mempertahankan konektivitas."
+    )
 
-    <h4>4. Apa batasan model ini?</h4>
-    <p>
-        Simulasi ini mengukur keterhubungan topologi, bukan kinerja
-        jaringan nyata. Kapasitas bandwidth, latensi, kehilangan
-        paket, protokol routing, dan proses pemulihan otomatis
-        belum dimodelkan.
-    </p>
-</div>
-""", unsafe_allow_html=True)
+    st.markdown("### 4. Apa batasan model ini?")
+    st.write(
+        "Simulasi ini mengukur keterhubungan topologi, bukan kinerja "
+        "jaringan nyata. Kapasitas bandwidth, latensi, kehilangan "
+        "paket, protokol routing, dan proses pemulihan otomatis "
+        "belum dimodelkan."
+    )
 
 st.warning(
     "Hasil berlaku untuk topologi simulasi yang didefinisikan "
     "dalam kode ini. Hasil bukan pengukuran jaringan fisik."
 )
-
-st.divider()
-
-st.markdown("""
-<div style="
-    text-align:center;
-    color:#A994B7;
-    font-size:12px;
-    line-height:1.8;
-    padding:8px 0 20px 0;
-">
-    <b style="color:#DDA5FF;">NETWORK BLACKOUT</b><br>
-    Graph Simulation Project · Simulasi dan Analisis Kegagalan Jaringan<br>
-    Developed by Azzah Fatimatu Zahrah · 240601110019
-</div>
-""", unsafe_allow_html=True)
