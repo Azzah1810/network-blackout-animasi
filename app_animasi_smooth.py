@@ -1,14 +1,13 @@
+import json
 import streamlit as st
 import streamlit.components.v1 as components
 import networkx as nx
 import plotly.graph_objects as go
 import pandas as pd
-import json
 
-# ==========================================
+# ============================================================
 # 1. KONFIGURASI APLIKASI
-# ==========================================
-
+# ============================================================
 st.set_page_config(
     page_title="Network Blackout",
     page_icon="🌐",
@@ -16,10 +15,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ==========================================
+# ============================================================
 # 2. TEMA VISUAL
-# ==========================================
-
+# ============================================================
 st.markdown("""
 <style>
 :root {
@@ -140,6 +138,14 @@ div[data-baseweb="select"] > div {
     box-shadow: 0 8px 30px rgba(112, 29, 153, 0.10);
 }
 
+.project-label {
+    color: #DDA5FF;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 9px;
+}
+
 .banner-tag {
     display: inline-block;
     border: 1px solid #754493;
@@ -242,12 +248,12 @@ footer {
 """, unsafe_allow_html=True)
 
 
-# ==========================================
+# ============================================================
 # 3. BANNER UTAMA
-# ==========================================
-
+# ============================================================
 st.markdown("""
 <div class="network-banner">
+    <div class="project-label">PROYEK 05</div>
     <div class="banner-tag">🌐 GRAPH SIMULATION PROJECT</div>
 
     <h1>NETWORK <span>BLACKOUT</span></h1>
@@ -278,34 +284,32 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ==========================================
+# ============================================================
 # 4. MEMBANGUN TOPOLOGI JARINGAN
-# ==========================================
-
+# ============================================================
 @st.cache_resource
 def create_network():
     graph = nx.Graph()
 
     devices = {
-        "S":  {"type": "server", "label": "Server"},
+        "S": {"type": "server", "label": "Server"},
         "R1": {"type": "router", "label": "Router 1"},
         "R2": {"type": "router", "label": "Router 2"},
         "R3": {"type": "router", "label": "Router 3"},
         "R4": {"type": "router", "label": "Router 4"},
         "R5": {"type": "router", "label": "Router 5"},
-        "C1": {"type": "computer", "label": "Komputer 1"},
-        "C2": {"type": "computer", "label": "Komputer 2"},
-        "C3": {"type": "computer", "label": "Komputer 3"},
-        "C4": {"type": "computer", "label": "Komputer 4"},
-        "C5": {"type": "computer", "label": "Komputer 5"},
-        "C6": {"type": "computer", "label": "Komputer 6"},
-        "C7": {"type": "computer", "label": "Komputer 7"},
-        "C8": {"type": "computer", "label": "Komputer 8"},
-        "C9": {"type": "computer", "label": "Komputer 9"},
+        **{
+            f"C{i}": {
+                "type": "computer",
+                "label": f"Komputer {i}"
+            }
+            for i in range(1, 10)
+        },
     }
 
-    for node, attributes in devices.items():
-        graph.add_node(node, **attributes)
+    graph.add_nodes_from(
+        (node, attrs) for node, attrs in devices.items()
+    )
 
     connections = [
         ("S", "R1"),
@@ -334,7 +338,7 @@ SOURCE = "S"
 ROUTER_OPTIONS = ["R1", "R2", "R3", "R4", "R5"]
 
 POSITIONS = {
-    "S":  (0, 2),
+    "S": (0, 2),
     "R1": (1, 2),
     "R2": (2, 3),
     "R3": (2, 1),
@@ -352,22 +356,21 @@ POSITIONS = {
 }
 
 
-# ==========================================
+# ============================================================
 # 5. ANALISIS KEGAGALAN ROUTER
-# ==========================================
-
+# ============================================================
 def analyze_failure(router_failed):
     graph_after = G.copy()
 
     if router_failed in graph_after:
         graph_after.remove_node(router_failed)
 
-    reachable = set()
-
     if SOURCE in graph_after:
         reachable = set(
             nx.node_connected_component(graph_after, SOURCE)
         )
+    else:
+        reachable = set()
 
     computers = [
         node for node, data in G.nodes(data=True)
@@ -395,10 +398,9 @@ def analyze_failure(router_failed):
     }
 
 
-# ==========================================
+# ============================================================
 # 6. VISUALISASI GRAF PLOTLY
-# ==========================================
-
+# ============================================================
 def draw_network(router_failed=None, step=0):
     fig = go.Figure()
 
@@ -410,7 +412,6 @@ def draw_network(router_failed=None, step=0):
         graph_view = result["graph"]
         reachable = result["reachable"]
 
-    # Koneksi aktif dan koneksi pada komponen terputus
     active_x, active_y = [], []
     inactive_x, inactive_y = [], []
 
@@ -419,18 +420,23 @@ def draw_network(router_failed=None, step=0):
         x1, y1 = POSITIONS[v]
 
         if u in reachable and v in reachable:
-            active_x.extend([x0, x1, None])
-            active_y.extend([y0, y1, None])
+            target_x, target_y = active_x, active_y
         else:
-            inactive_x.extend([x0, x1, None])
-            inactive_y.extend([y0, y1, None])
+            target_x, target_y = inactive_x, inactive_y
+
+        target_x.extend([x0, x1, None])
+        target_y.extend([y0, y1, None])
 
     if inactive_x:
         fig.add_trace(go.Scatter(
             x=inactive_x,
             y=inactive_y,
             mode="lines",
-            line=dict(color="#6B536F", width=2, dash="dot"),
+            line=dict(
+                color="#6B536F",
+                width=2,
+                dash="dot"
+            ),
             hoverinfo="skip",
             name="Jalur tanpa akses server",
         ))
@@ -500,13 +506,10 @@ def draw_network(router_failed=None, step=0):
                 line=dict(color="#FFFFFF", width=1),
             ),
             name=group_name,
-            customdata=[
-                G.nodes[n]["label"] for n in nodes
-            ],
+            customdata=[G.nodes[n]["label"] for n in nodes],
             hovertemplate="%{customdata}<extra></extra>",
         ))
 
-    # Menampilkan router gagal pada posisi semula
     if step > 0 and router_failed in POSITIONS:
         x, y = POSITIONS[router_failed]
 
@@ -524,7 +527,11 @@ def draw_network(router_failed=None, step=0):
                 line=dict(color="#FF647C", width=3),
             ),
             name="Router gagal",
-            hovertemplate="Router gagal: " + router_failed + "<extra></extra>",
+            hovertemplate=(
+                "Router gagal: "
+                + router_failed
+                + "<extra></extra>"
+            ),
         ))
 
     if step == 0:
@@ -570,16 +577,14 @@ def draw_network(router_failed=None, step=0):
     return fig
 
 
-# ==========================================
+# ============================================================
 # 7. SIDEBAR PENGATURAN
-# ==========================================
-
+# ============================================================
 with st.sidebar:
     st.markdown("## 🌐 Network Blackout")
     st.caption("Panel pengaturan simulasi")
     st.divider()
 
-    # Tombol reset ditempatkan sebelum widget yang direset
     if st.button("↺ Reset simulasi", use_container_width=True):
         st.session_state["router_failed"] = "R3"
         st.session_state["stage"] = "Kondisi awal"
@@ -624,8 +629,8 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     st.divider()
-
     st.markdown("### 🎨 Legenda")
+
     st.markdown("""
     <div class="small-note">
         🟡 Server<br>
@@ -640,17 +645,13 @@ with st.sidebar:
     st.caption("Network Blackout · Graph Simulation")
 
 
-# ==========================================
+# ============================================================
 # 8. STATUS DAN METRIK
-# ==========================================
-
+# ============================================================
 result = analyze_failure(router_failed)
 
 if step == 0:
-    connected_count = sum(
-        1 for node, data in G.nodes(data=True)
-        if data["type"] == "computer"
-    )
+    connected_count = 9
     disconnected_count = 0
     component_count = nx.number_connected_components(G)
     status_text = "Kondisi normal"
@@ -665,9 +666,10 @@ else:
     )
 
 st.markdown("## Dashboard Jaringan")
+
 st.caption(
     "Pantau kondisi jaringan dan dampak kegagalan router "
-    berdasarkan topologi graf."
+    "berdasarkan topologi graf."
 )
 
 metric1, metric2, metric3, metric4 = st.columns(4)
@@ -688,7 +690,11 @@ metric2.metric(
 metric3.metric(
     "Komputer terputus",
     disconnected_count,
-    delta="Kehilangan akses server" if disconnected_count else "Tidak ada",
+    delta=(
+        "Kehilangan akses server"
+        if disconnected_count
+        else "Tidak ada"
+    ),
     delta_color="inverse" if disconnected_count else "off",
 )
 
@@ -700,7 +706,8 @@ metric4.metric(
 
 if step == 0:
     st.success(
-        "Jaringan berada pada kondisi awal. Belum ada router yang dimatikan."
+        "Jaringan berada pada kondisi awal. "
+        "Belum ada router yang dimatikan."
     )
 elif step == 1:
     st.warning(
@@ -714,11 +721,11 @@ else:
     )
 
 
-# ==========================================
+# ============================================================
 # 9. VISUALISASI TOPOLOGI
-# ==========================================
-
+# ============================================================
 st.markdown("## 🕸️ Visualisasi Topologi")
+
 st.caption(
     "Arahkan kursor ke perangkat untuk melihat namanya. "
     "Warna menunjukkan status konektivitas."
@@ -736,26 +743,29 @@ st.plotly_chart(
 )
 
 
-# ==========================================
+# ============================================================
 # 10. ANIMASI JARINGAN SVG
-# ==========================================
-
+# ============================================================
 def make_smooth_html(router_failed, step):
-    result = analyze_failure(router_failed) if step > 0 else None
+    analysis = analyze_failure(router_failed) if step > 0 else None
 
-    graph_view = G.copy() if step == 0 else result["graph"]
-    reachable = set(G.nodes) if step == 0 else result["reachable"]
+    graph_view = G.copy() if step == 0 else analysis["graph"]
+    reachable = (
+        set(G.nodes)
+        if step == 0
+        else analysis["reachable"]
+    )
 
     nodes = []
 
-    for node, data in G.nodes(data=True):
+    for node, attrs in G.nodes(data=True):
         x, y = POSITIONS[node]
 
         nodes.append({
             "id": node,
             "x": float(x),
             "y": float(y),
-            "type": data["type"],
+            "type": attrs["type"],
             "active": node in reachable,
             "failed": node == router_failed and step > 0,
         })
@@ -771,24 +781,24 @@ def make_smooth_html(router_failed, step):
         "step": step,
     }).replace("</", "<\\/")
 
-    html = """
+    html = r'''
+<div style="
+    font-family:Arial,sans-serif;
+    color:#F6EEFC;
+    background:#0C0812;
+    padding:14px;
+    border:1px solid #39204A;
+    border-radius:14px;
+    box-sizing:border-box;
+    width:100%;
+">
     <div style="
-        font-family:Arial,sans-serif;
-        color:#F6EEFC;
-        background:#0C0812;
-        padding:14px;
-        border:1px solid #39204A;
-        border-radius:14px;
-        box-sizing:border-box;
-        width:100%;
+        display:flex;
+        align-items:center;
+        flex-wrap:wrap;
+        gap:9px;
+        margin-bottom:12px;
     ">
-      <div style="
-          display:flex;
-          align-items:center;
-          flex-wrap:wrap;
-          gap:9px;
-          margin-bottom:12px;
-      ">
         <button id="play" style="
             background:#A900DE;
             color:white;
@@ -821,9 +831,9 @@ def make_smooth_html(router_failed, step):
             color:#DDA5FF;
             font-size:12px;
         ">Animasi siap</span>
-      </div>
+    </div>
 
-      <div style="width:100%; overflow:hidden;">
+    <div style="width:100%;overflow:hidden;">
         <svg id="network"
              viewBox="0 0 900 520"
              preserveAspectRatio="xMidYMid meet"
@@ -838,233 +848,247 @@ def make_smooth_html(router_failed, step):
                  border-radius:10px;
              ">
         </svg>
-      </div>
+    </div>
 
-      <div style="
-          display:flex;
-          flex-wrap:wrap;
-          gap:12px;
-          color:#CBB8D8;
-          font-size:11px;
-          margin-top:12px;
-          line-height:1.8;
-      ">
+    <div style="
+        display:flex;
+        flex-wrap:wrap;
+        gap:12px;
+        color:#CBB8D8;
+        font-size:11px;
+        margin-top:12px;
+        line-height:1.8;
+    ">
         <span>🟡 Server</span>
         <span>🟣 Router aktif</span>
         <span>🟢 Komputer terhubung</span>
         <span>🔴 Router gagal / komputer terputus</span>
-      </div>
-      <div style="
-          font-size:11px;
-          color:#9F8BAC;
-          margin-top:5px;
-      ">
-        Titik putih bergerak menggambarkan aliran data pada jalur aktif.
-      </div>
     </div>
 
-    <script>
-    const data = PAYLOAD_PLACEHOLDER;
-    const svg = document.getElementById("network");
-    const ns = "http://www.w3.org/2000/svg";
+    <div style="
+        font-size:11px;
+        color:#9F8BAC;
+        margin-top:5px;
+    ">
+        Titik putih bergerak menggambarkan aliran data pada jalur aktif.
+    </div>
+</div>
 
-    const X = x => 65 + x * 145;
-    const Y = y => 455 - y * 87;
+<script>
+const data = PAYLOAD_PLACEHOLDER;
+const svg = document.getElementById("network");
+const ns = "http://www.w3.org/2000/svg";
 
-    const byId = Object.fromEntries(
-        data.nodes.map(n => [n.id, n])
-    );
+const X = x => 65 + x * 145;
+const Y = y => 455 - y * 87;
 
-    function element(tag, attrs, parent = svg) {
-        const el = document.createElementNS(ns, tag);
+const byId = Object.fromEntries(
+    data.nodes.map(n => [n.id, n])
+);
 
-        Object.entries(attrs).forEach(([k, v]) => {
-            el.setAttribute(k, v);
-        });
+function element(tag, attrs, parent = svg) {
+    const el = document.createElementNS(ns, tag);
 
-        parent.appendChild(el);
-        return el;
-    }
-
-    // Garis koneksi
-    data.edges.forEach(e => {
-        const a = byId[e.source];
-        const b = byId[e.target];
-
-        const active = a.active && b.active;
-
-        element("line", {
-            x1: X(a.x),
-            y1: Y(a.y),
-            x2: X(b.x),
-            y2: Y(b.y),
-            stroke: active ? "#8540A5" : "#4A3B52",
-            "stroke-width": active ? 3 : 2,
-            "stroke-dasharray": active ? "none" : "5 5",
-            "stroke-linecap": "round"
-        });
+    Object.entries(attrs).forEach(([key, value]) => {
+        el.setAttribute(key, value);
     });
 
-    // Menggambar perangkat
-    data.nodes.forEach(n => {
-        const color = n.failed
-            ? "#FF647C"
-            : n.type === "server"
-                ? "#F5C451"
-                : n.type === "router"
-                    ? "#B832F0"
-                    : n.active
-                        ? "#38D996"
-                        : "#FF647C";
+    parent.appendChild(el);
+    return el;
+}
 
-        const radius = n.type === "server" ? 19 : 14;
+// Menggambar koneksi di belakang perangkat.
+data.edges.forEach(edge => {
+    const a = byId[edge.source];
+    const b = byId[edge.target];
+    const active = a.active && b.active;
 
-        if (n.failed) {
-            element("circle", {
-                cx: X(n.x),
-                cy: Y(n.y),
-                r: 25,
-                fill: "none",
-                stroke: "#FF647C",
-                "stroke-width": 2,
-                "stroke-dasharray": "5 4"
-            });
-        }
+    element("line", {
+        x1: X(a.x),
+        y1: Y(a.y),
+        x2: X(b.x),
+        y2: Y(b.y),
+        stroke: active ? "#8540A5" : "#4A3B52",
+        "stroke-width": active ? 3 : 2,
+        "stroke-dasharray": active ? "none" : "5 5",
+        "stroke-linecap": "round"
+    });
+});
 
+// Menggambar perangkat dan label.
+data.nodes.forEach(node => {
+    const color = node.failed
+        ? "#FF647C"
+        : node.type === "server"
+            ? "#F5C451"
+            : node.type === "router"
+                ? "#B832F0"
+                : node.active
+                    ? "#38D996"
+                    : "#FF647C";
+
+    const radius = node.type === "server" ? 19 : 14;
+
+    if (node.failed) {
         element("circle", {
-            cx: X(n.x),
-            cy: Y(n.y),
-            r: radius + 5,
-            fill: color,
-            opacity: 0.12
+            cx: X(node.x),
+            cy: Y(node.y),
+            r: 25,
+            fill: "none",
+            stroke: "#FF647C",
+            "stroke-width": 2,
+            "stroke-dasharray": "5 4"
         });
-
-        element("circle", {
-            cx: X(n.x),
-            cy: Y(n.y),
-            r: radius,
-            fill: color,
-            stroke: "#FFFFFF",
-            "stroke-width": 1.3
-        });
-
-        const t = element("text", {
-            x: X(n.x),
-            y: Y(n.y) + 4,
-            "text-anchor": "middle",
-            fill: "#FFFFFF",
-            "font-size": n.type === "server" ? 12 : 10,
-            "font-weight": "bold"
-        });
-
-        t.textContent = n.id;
-
-        const label = element("text", {
-            x: X(n.x),
-            y: Y(n.y) + radius + 16,
-            "text-anchor": "middle",
-            fill: n.failed ? "#FF8797" : "#DDA5FF",
-            "font-size": 10,
-            "font-family": "Arial, sans-serif"
-        });
-
-        label.textContent = n.failed
-            ? "MATI"
-            : n.type === "server"
-                ? "Server"
-                : n.type === "router"
-                    ? "Router"
-                    : "";
-    });
-
-    // Partikel data bergerak
-    const particles = [];
-
-    data.edges.forEach(e => {
-        const a = byId[e.source];
-        const b = byId[e.target];
-
-        const p = element("circle", {
-            r: 4.5,
-            fill: "#FFFFFF",
-            stroke: "#DDA5FF",
-            "stroke-width": 1,
-            opacity: 0
-        });
-
-        particles.push({
-            p: p,
-            a: a,
-            b: b,
-            t: Math.random()
-        });
-    });
-
-    let running = false;
-    let frame = null;
-
-    function animate() {
-        if (!running) return;
-
-        particles.forEach(q => {
-            q.t = (q.t + 0.0045) % 1;
-
-            const active = q.a.active && q.b.active;
-            q.p.setAttribute("opacity", active ? 1 : 0);
-
-            q.p.setAttribute(
-                "cx",
-                X(q.a.x + (q.b.x - q.a.x) * q.t)
-            );
-
-            q.p.setAttribute(
-                "cy",
-                Y(q.a.y + (q.b.y - q.a.y) * q.t)
-            );
-        });
-
-        frame = requestAnimationFrame(animate);
     }
 
-    function pauseAnimation(message) {
-        running = false;
+    element("circle", {
+        cx: X(node.x),
+        cy: Y(node.y),
+        r: radius + 5,
+        fill: color,
+        opacity: 0.12
+    });
 
-        if (frame !== null) {
-            cancelAnimationFrame(frame);
-            frame = null;
-        }
+    element("circle", {
+        cx: X(node.x),
+        cy: Y(node.y),
+        r: radius,
+        fill: color,
+        stroke: "#FFFFFF",
+        "stroke-width": 1.3
+    });
 
-        document.getElementById("status").textContent = message;
+    const text = element("text", {
+        x: X(node.x),
+        y: Y(node.y) + 4,
+        "text-anchor": "middle",
+        fill: "#FFFFFF",
+        "font-size": node.type === "server" ? 12 : 10,
+        "font-weight": "bold"
+    });
+
+    text.textContent = node.id;
+
+    const label = element("text", {
+        x: X(node.x),
+        y: Y(node.y) + radius + 16,
+        "text-anchor": "middle",
+        fill: node.failed ? "#FF8797" : "#DDA5FF",
+        "font-size": 10,
+        "font-family": "Arial, sans-serif"
+    });
+
+    label.textContent = node.failed
+        ? "MATI"
+        : node.type === "server"
+            ? "Server"
+            : node.type === "router"
+                ? "Router"
+                : "";
+});
+
+// Membuat partikel yang bergerak pada jalur aktif.
+const particles = [];
+
+data.edges.forEach(edge => {
+    const a = byId[edge.source];
+    const b = byId[edge.target];
+
+    const particle = element("circle", {
+        r: 4.5,
+        fill: "#FFFFFF",
+        stroke: "#DDA5FF",
+        "stroke-width": 1,
+        opacity: 0
+    });
+
+    particles.push({
+        p: particle,
+        a: a,
+        b: b,
+        t: Math.random()
+    });
+});
+
+let running = false;
+let frame = null;
+
+function animate() {
+    if (!running) return;
+
+    particles.forEach(particle => {
+        particle.t = (particle.t + 0.0045) % 1;
+
+        const active =
+            particle.a.active && particle.b.active;
+
+        particle.p.setAttribute(
+            "opacity",
+            active ? 1 : 0
+        );
+
+        particle.p.setAttribute(
+            "cx",
+            X(
+                particle.a.x
+                + (particle.b.x - particle.a.x) * particle.t
+            )
+        );
+
+        particle.p.setAttribute(
+            "cy",
+            Y(
+                particle.a.y
+                + (particle.b.y - particle.a.y) * particle.t
+            )
+        );
+    });
+
+    frame = requestAnimationFrame(animate);
+}
+
+function pauseAnimation(message) {
+    running = false;
+
+    if (frame !== null) {
+        cancelAnimationFrame(frame);
+        frame = null;
     }
 
-    document.getElementById("play").onclick = () => {
-        if (!running) {
-            running = true;
-            document.getElementById("status").textContent =
-                "Animasi berjalan";
-            animate();
-        }
-    };
+    document.getElementById("status").textContent = message;
+}
 
-    document.getElementById("pause").onclick = () => {
-        pauseAnimation("Animasi dijeda");
-    };
+document.getElementById("play").onclick = () => {
+    if (!running) {
+        running = true;
 
-    document.getElementById("resetAnim").onclick = () => {
-        pauseAnimation("Animasi diulang");
+        document.getElementById("status").textContent =
+            "Animasi berjalan";
 
-        particles.forEach(q => {
-            q.t = Math.random();
-            q.p.setAttribute("opacity", 0);
-        });
-    };
-    </script>
-    """
+        animate();
+    }
+};
+
+document.getElementById("pause").onclick = () => {
+    pauseAnimation("Animasi dijeda");
+};
+
+document.getElementById("resetAnim").onclick = () => {
+    pauseAnimation("Animasi diulang");
+
+    particles.forEach(particle => {
+        particle.t = Math.random();
+        particle.p.setAttribute("opacity", 0);
+    });
+};
+</script>
+'''
 
     return html.replace("PAYLOAD_PLACEHOLDER", payload)
 
 
 st.markdown("## 🎬 Animasi Jaringan")
+
 st.caption(
     "Gunakan Play untuk menjalankan animasi aliran data, "
     "Pause untuk menjeda, dan Ulangi untuk mengatur ulang partikel."
@@ -1077,10 +1101,9 @@ components.html(
 )
 
 
-# ==========================================
+# ============================================================
 # 11. ANALISIS OTOMATIS
-# ==========================================
-
+# ============================================================
 st.markdown("## 🔎 Hasil Analisis Konektivitas")
 
 if step == 0:
@@ -1101,9 +1124,11 @@ if step == 0:
 
 else:
     failed_neighbors = list(G.neighbors(router_failed))
+
     disconnected_names = [
         G.nodes[n]["label"] for n in result["disconnected"]
     ]
+
     connected_names = [
         G.nodes[n]["label"] for n in result["connected"]
     ]
@@ -1140,6 +1165,7 @@ else:
 
     with left:
         st.markdown("### 🟢 Komputer terhubung")
+
         if connected_names:
             st.success(", ".join(connected_names))
         else:
@@ -1147,6 +1173,7 @@ else:
 
     with right:
         st.markdown("### 🔴 Komputer terputus")
+
         if disconnected_names:
             st.error(", ".join(disconnected_names))
         else:
@@ -1155,7 +1182,8 @@ else:
     if step == 2:
         with st.expander("Lihat komponen jaringan setelah kegagalan"):
             for i, component in enumerate(
-                result["components"], start=1
+                result["components"],
+                start=1
             ):
                 members = sorted(component)
                 server_present = SOURCE in component
@@ -1164,14 +1192,15 @@ else:
                     f"**Komponen {i}** — "
                     f"{'Memuat server' if server_present else 'Tidak terhubung ke server'}"
                 )
+
                 st.write(", ".join(members))
 
 
-# ==========================================
+# ============================================================
 # 12. PERBANDINGAN SKENARIO KEGAGALAN
-# ==========================================
-
+# ============================================================
 st.markdown("## 📊 Perbandingan Skenario")
+
 st.caption(
     "Bandingkan dampak jika masing-masing router gagal."
 )
@@ -1179,13 +1208,13 @@ st.caption(
 comparison = []
 
 for router in ROUTER_OPTIONS:
-    data = analyze_failure(router)
+    scenario = analyze_failure(router)
 
     comparison.append({
         "Router gagal": router,
-        "Komputer terhubung": len(data["connected"]),
-        "Komputer terputus": len(data["disconnected"]),
-        "Jumlah komponen": len(data["components"]),
+        "Komputer terhubung": len(scenario["connected"]),
+        "Komputer terputus": len(scenario["disconnected"]),
+        "Jumlah komponen": len(scenario["components"]),
     })
 
 comparison_df = pd.DataFrame(comparison)
@@ -1245,10 +1274,9 @@ st.plotly_chart(
 )
 
 
-# ==========================================
+# ============================================================
 # 13. INTERPRETASI DAN BATASAN
-# ==========================================
-
+# ============================================================
 st.markdown("## 📘 Memahami Hasil Simulasi")
 
 st.markdown("""
@@ -1289,8 +1317,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.warning(
-    "Hasil berlaku untuk topologi simulasi yang didefinisikan dalam "
-    "kode ini. Hasil bukan pengukuran jaringan fisik."
+    "Hasil berlaku untuk topologi simulasi yang didefinisikan "
+    "dalam kode ini. Hasil bukan pengukuran jaringan fisik."
 )
 
 st.divider()
