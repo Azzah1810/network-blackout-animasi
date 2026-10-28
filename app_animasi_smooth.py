@@ -25,7 +25,7 @@ st.markdown("""
     --bg: #08060D;
     --panel: #120C1B;
     --panel2: #191025;
-    --border: #59452B;
+    --border: #39204A;
     --purple: #B832F0;
     --lavender: #DDA5FF;
     --text: #F6EEFC;
@@ -34,84 +34,228 @@ st.markdown("""
     --red: #FF647C;
 }
 
-/* FRAME UTAMA JUDUL */
-.network-banner {
+.stApp {
     background:
-        radial-gradient(
-            ellipse at 90% 10%,
-            rgba(244, 215, 122, 0.13),
-            transparent 42%
-        ),
-        linear-gradient(135deg, #171020, #100B17);
-
-    border: 1px solid #B99B52;
-    border-radius: 22px;
-    padding: 30px;
-    margin: 8px 0 26px 0;
-    box-shadow: 0 8px 28px rgba(244, 215, 122, 0.08);
+        radial-gradient(ellipse at 85% 0%,
+        rgba(91, 24, 124, 0.18), transparent 38%),
+        var(--bg);
+    color: var(--text);
 }
 
-.network-banner .project-label {
-    color: #F4D77A;
+[data-testid="stHeader"] {
+    background: rgba(8, 6, 13, 0.95);
+}
+
+[data-testid="stSidebar"] {
+    background: #100B17;
+    border-right: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    background: #100B17;
+}
+
+h1, h2, h3, h4 {
+    color: var(--lavender) !important;
+}
+
+p, label, .stMarkdown, [data-testid="stCaptionContainer"] {
+    color: var(--text);
+}
+
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #191025, #100B17);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 17px 18px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+[data-testid="stMetricLabel"] {
+    color: var(--muted) !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: #FFFFFF !important;
+}
+
+[data-testid="stMetricDelta"] {
+    font-size: 12px;
+}
+
+.stButton > button {
+    background: linear-gradient(100deg, #8E16C5, #B832F0);
+    color: white;
+    border: 1px solid #C65AFF;
+    border-radius: 9px;
+    min-height: 40px;
+    font-weight: 600;
+}
+
+.stButton > button:hover {
+    background: #C65AFF;
+    color: white;
+    border-color: #E6C3FF;
+}
+
+div[data-baseweb="select"] > div {
+    background: #1A1224;
+    border-color: #543468;
+    color: white;
+    border-radius: 8px;
+}
+
+.stRadio label, .stCheckbox label {
+    color: var(--text) !important;
+}
+
+[data-testid="stDataFrame"] {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+[data-testid="stAlert"] {
+    border-radius: 10px;
+}
+
+[data-testid="stExpander"] {
+    background: #120C1B;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+/* FRAME JUDUL - UNGU */
+.network-banner {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            ellipse at 85% 30%,
+            rgba(153, 38, 205, 0.35),
+            transparent 45%
+        ),
+        linear-gradient(
+            120deg,
+            #100B17 0%,
+            #21102E 60%,
+            #100B17 100%
+        );
+    border: 1px solid #63347A;
+    border-radius: 20px;
+    padding: 30px 32px;
+    margin: 5px 0 24px 0;
+    box-shadow: 0 8px 30px rgba(112, 29, 153, 0.10);
+}
+
+.project-label {
+    color: #DDA5FF;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 3px;
+    margin-bottom: 9px;
+}
+
+.banner-tag {
+    display: inline-block;
+    border: 1px solid #754493;
+    border-radius: 30px;
+    padding: 6px 12px;
+    color: #E3B5FF;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
     margin-bottom: 10px;
 }
 
-.network-banner .banner-tag {
-    display: inline-block;
-    border: 1px solid #8D7540;
-    border-radius: 30px;
-    padding: 6px 12px;
-    color: #F4D77A;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin-bottom: 12px;
-}
-
 .network-banner h1 {
-    color: #FFF8E5 !important;
-    font-size: clamp(30px, 4vw, 46px);
+    color: #FFFFFF !important;
+    font-size: clamp(29px, 4vw, 43px);
     line-height: 1.15;
     margin: 5px 0 12px 0;
+    letter-spacing: 0.5px;
 }
 
 .network-banner h1 span {
-    color: #F4D77A;
+    color: #D477FF;
 }
 
 .network-banner p {
     color: #E4D7ED;
-    line-height: 1.8;
-    margin-bottom: 10px;
+    line-height: 1.75;
+    margin-bottom: 8px;
 }
 
-.network-banner .banner-features {
+.banner-features {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 18px;
+    margin-top: 16px;
 }
 
-.network-banner .banner-feature {
-    color: #F4D77A;
-    background: rgba(244, 215, 122, 0.08);
-    border: 1px solid rgba(244, 215, 122, 0.3);
+.banner-feature {
+    color: #E8C9FF;
+    background: rgba(146, 55, 190, 0.13);
+    border: 1px solid rgba(184, 92, 224, 0.35);
     border-radius: 20px;
-    padding: 7px 11px;
+    padding: 6px 10px;
     font-size: 11px;
 }
 
-.network-banner .network-credit {
-    color: #D5C5A0;
+.network-credit {
+    color: #CBB0D9;
     font-size: 12px;
-    border-left: 3px solid #F4D77A;
+    border-left: 3px solid #C65AFF;
     padding: 5px 0 5px 12px;
-    margin-top: 22px;
+    margin-top: 20px;
     line-height: 1.8;
 }
+
+.section-card {
+    background: linear-gradient(145deg, #191025, #100B17);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 17px;
+    margin-bottom: 10px;
+}
+
+.section-card p {
+    color: #DED0E8;
+    line-height: 1.8;
+}
+
+.small-note {
+    color: #B7A6C4;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* INDIKATOR STATUS - BUTTER YELLOW */
+.status-pill {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 5px 10px;
+    background: rgba(244, 215, 122, 0.10);
+    border: 1px solid rgba(244, 215, 122, 0.35);
+    color: #F4D77A;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+hr {
+    border-color: var(--border);
+}
+
+footer {
+    visibility: hidden;
+}
+
+@media (max-width: 700px) {
+    .network-banner {
+        padding: 22px 18px;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
