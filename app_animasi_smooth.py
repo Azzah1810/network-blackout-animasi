@@ -20,229 +20,97 @@ st.set_page_config(
 # ============================================================
 st.markdown("""
 <style>
+
 :root {
     --bg: #08060D;
     --panel: #120C1B;
     --panel2: #191025;
-    --border: #39204A;
+    --border: #59452B;
     --purple: #B832F0;
     --lavender: #DDA5FF;
     --text: #F6EEFC;
     --muted: #B7A6C4;
-    --green: #38D996;
+    --green: #F4D77A;
     --red: #FF647C;
 }
 
-.stApp {
-    background:
-        radial-gradient(ellipse at 85% 0%,
-        rgba(91, 24, 124, 0.18), transparent 38%),
-        var(--bg);
-    color: var(--text);
-}
-
-[data-testid="stHeader"] {
-    background: rgba(8, 6, 13, 0.95);
-}
-
-[data-testid="stSidebar"] {
-    background: #100B17;
-    border-right: 1px solid var(--border);
-}
-
-[data-testid="stSidebar"] > div:first-child {
-    background: #100B17;
-}
-
-h1, h2, h3, h4 {
-    color: var(--lavender) !important;
-}
-
-p, label, .stMarkdown, [data-testid="stCaptionContainer"] {
-    color: var(--text);
-}
-
-[data-testid="stMetric"] {
-    background: linear-gradient(145deg, #191025, #100B17);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    padding: 17px 18px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
-}
-
-[data-testid="stMetricLabel"] {
-    color: var(--muted) !important;
-}
-
-[data-testid="stMetricValue"] {
-    color: #FFFFFF !important;
-}
-
-[data-testid="stMetricDelta"] {
-    font-size: 12px;
-}
-
-.stButton > button {
-    background: linear-gradient(100deg, #8E16C5, #B832F0);
-    color: white;
-    border: 1px solid #C65AFF;
-    border-radius: 9px;
-    min-height: 40px;
-    font-weight: 600;
-}
-
-.stButton > button:hover {
-    background: #C65AFF;
-    color: white;
-    border-color: #E6C3FF;
-}
-
-div[data-baseweb="select"] > div {
-    background: #1A1224;
-    border-color: #543468;
-    color: white;
-    border-radius: 8px;
-}
-
-.stRadio label, .stCheckbox label {
-    color: var(--text) !important;
-}
-
-[data-testid="stDataFrame"] {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-[data-testid="stAlert"] {
-    border-radius: 10px;
-}
-
-[data-testid="stExpander"] {
-    background: #120C1B;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-}
-
+/* FRAME UTAMA JUDUL */
 .network-banner {
-    position: relative;
-    overflow: hidden;
     background:
-        radial-gradient(ellipse at 85% 30%,
-            rgba(153, 38, 205, 0.35), transparent 45%),
-        linear-gradient(120deg, #100B17 0%, #21102E 60%, #100B17 100%);
-    border: 1px solid #63347A;
-    border-radius: 20px;
-    padding: 30px 32px;
-    margin: 5px 0 24px 0;
-    box-shadow: 0 8px 30px rgba(112, 29, 153, 0.10);
+        radial-gradient(
+            ellipse at 90% 10%,
+            rgba(244, 215, 122, 0.13),
+            transparent 42%
+        ),
+        linear-gradient(135deg, #171020, #100B17);
+
+    border: 1px solid #B99B52;
+    border-radius: 22px;
+    padding: 30px;
+    margin: 8px 0 26px 0;
+    box-shadow: 0 8px 28px rgba(244, 215, 122, 0.08);
 }
 
-.project-label {
-    color: #DDA5FF;
+.network-banner .project-label {
+    color: #F4D77A;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 3px;
-    margin-bottom: 9px;
-}
-
-.banner-tag {
-    display: inline-block;
-    border: 1px solid #754493;
-    border-radius: 30px;
-    padding: 6px 12px;
-    color: #E3B5FF;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
     margin-bottom: 10px;
 }
 
+.network-banner .banner-tag {
+    display: inline-block;
+    border: 1px solid #8D7540;
+    border-radius: 30px;
+    padding: 6px 12px;
+    color: #F4D77A;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
 .network-banner h1 {
-    color: #FFFFFF !important;
-    font-size: clamp(29px, 4vw, 43px);
+    color: #FFF8E5 !important;
+    font-size: clamp(30px, 4vw, 46px);
     line-height: 1.15;
     margin: 5px 0 12px 0;
-    letter-spacing: 0.5px;
 }
 
 .network-banner h1 span {
-    color: #D477FF;
+    color: #F4D77A;
 }
 
 .network-banner p {
     color: #E4D7ED;
-    line-height: 1.75;
-    margin-bottom: 8px;
-}
-
-.banner-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-}
-
-.banner-feature {
-    color: #E8C9FF;
-    background: rgba(146, 55, 190, 0.13);
-    border: 1px solid rgba(184, 92, 224, 0.35);
-    border-radius: 20px;
-    padding: 6px 10px;
-    font-size: 11px;
-}
-
-.network-credit {
-    color: #CBB0D9;
-    font-size: 12px;
-    border-left: 3px solid #C65AFF;
-    padding: 5px 0 5px 12px;
-    margin-top: 20px;
     line-height: 1.8;
-}
-
-.section-card {
-    background: linear-gradient(145deg, #191025, #100B17);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    padding: 17px;
     margin-bottom: 10px;
 }
 
-.section-card p {
-    color: #DED0E8;
-    line-height: 1.8;
+.network-banner .banner-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
 }
 
-.small-note {
-    color: #B7A6C4;
-    font-size: 12px;
-    line-height: 1.7;
-}
-
-.status-pill {
-    display: inline-block;
+.network-banner .banner-feature {
+    color: #F4D77A;
+    background: rgba(244, 215, 122, 0.08);
+    border: 1px solid rgba(244, 215, 122, 0.3);
     border-radius: 20px;
-    padding: 5px 10px;
-    background: rgba(56, 217, 150, 0.10);
-    border: 1px solid rgba(56, 217, 150, 0.35);
-    color: #65E7AF;
+    padding: 7px 11px;
+    font-size: 11px;
+}
+
+.network-banner .network-credit {
+    color: #D5C5A0;
     font-size: 12px;
-    font-weight: 600;
-}
-
-hr {
-    border-color: var(--border);
-}
-
-footer {
-    visibility: hidden;
-}
-
-@media (max-width: 700px) {
-    .network-banner {
-        padding: 22px 18px;
-    }
+    border-left: 3px solid #F4D77A;
+    padding: 5px 0 5px 12px;
+    margin-top: 22px;
+    line-height: 1.8;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -253,34 +121,35 @@ footer {
 st.markdown("""
 <div class="network-banner">
     <div class="project-label">PROYEK 05</div>
-    <div class="banner-tag">🌐 GRAPH SIMULATION PROJECT</div>
-</div>
-""", unsafe_allow_html=True)
 
-st.markdown(
-    "# NETWORK BLACKOUT"
-)
+    <div class="banner-tag">
+        🌐 GRAPH SIMULATION PROJECT
+    </div>
 
-st.markdown(
-    "### Simulasi dan Analisis Kegagalan Jaringan"
-)
+    <h1>NETWORK <span>BLACKOUT</span></h1>
 
-st.write(
-    "Pelajari bagaimana kegagalan router memengaruhi konektivitas "
-    "komputer menuju server. Amati perubahan topologi, identifikasi "
-    "perangkat yang kehilangan akses, dan bandingkan dampak "
-    "kegagalan pada setiap router."
-)
+    <p style="font-size:18px;">
+        Simulasi dan Analisis Kegagalan Jaringan
+    </p>
 
-st.markdown(
-    "◈ Visualisasi Graf　 ◈ Simulasi Kegagalan　 "
-    "◈ Animasi Jaringan　 ◈ Analisis Konektivitas"
-)
+    <p>
+        Pelajari bagaimana kegagalan router memengaruhi konektivitas
+        komputer menuju server. Amati perubahan topologi, identifikasi
+        perangkat yang kehilangan akses, dan bandingkan dampak
+        kegagalan pada setiap router.
+    </p>
 
-st.markdown("""
-<div class="network-credit">
-    Developed by <b>Azzah Fatimatu Zahrah</b><br>
-    240601110019
+    <div class="banner-features">
+        <span class="banner-feature">◈ Visualisasi Graf</span>
+        <span class="banner-feature">◈ Simulasi Kegagalan</span>
+        <span class="banner-feature">◈ Animasi Jaringan</span>
+        <span class="banner-feature">◈ Analisis Konektivitas</span>
+    </div>
+
+    <div class="network-credit">
+        Developed by <b>Azzah Fatimatu Zahrah</b><br>
+        240601110019
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
