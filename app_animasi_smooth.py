@@ -118,38 +118,39 @@ st.markdown("""
 # ============================================================
 # 3. BANNER UTAMA
 # ============================================================
+
 st.markdown("""
 <div class="network-banner">
-    <div class="project-label">PROYEK 05</div>
 
-    <div class="banner-tag">
-        🌐 GRAPH SIMULATION PROJECT
-    </div>
+<div class="banner-tag">
+    🌐 GRAPH SIMULATION PROJECT
+</div>
 
-    <h1>NETWORK <span>BLACKOUT</span></h1>
+<h1>NETWORK <span>BLACKOUT</span></h1>
 
-    <p style="font-size:18px;">
-        Simulasi dan Analisis Kegagalan Jaringan
-    </p>
+<p style="font-size:18px;">
+    Simulasi dan Analisis Kegagalan Jaringan
+</p>
 
-    <p>
-        Pelajari bagaimana kegagalan router memengaruhi konektivitas
-        komputer menuju server. Amati perubahan topologi, identifikasi
-        perangkat yang kehilangan akses, dan bandingkan dampak
-        kegagalan pada setiap router.
-    </p>
+<p>
+    Pelajari bagaimana kegagalan router memengaruhi konektivitas
+    komputer menuju server. Amati perubahan topologi, identifikasi
+    perangkat yang kehilangan akses, dan bandingkan dampak
+    kegagalan pada setiap router.
+</p>
 
-    <div class="banner-features">
-        <span class="banner-feature">◈ Visualisasi Graf</span>
-        <span class="banner-feature">◈ Simulasi Kegagalan</span>
-        <span class="banner-feature">◈ Animasi Jaringan</span>
-        <span class="banner-feature">◈ Analisis Konektivitas</span>
-    </div>
+<div class="banner-features">
+    <span class="banner-feature">◈ Visualisasi Graf</span>
+    <span class="banner-feature">◈ Simulasi Kegagalan</span>
+    <span class="banner-feature">◈ Animasi Jaringan</span>
+    <span class="banner-feature">◈ Analisis Konektivitas</span>
+</div>
 
-    <div class="network-credit">
-        Developed by <b>Azzah Fatimatu Zahrah</b><br>
-        240601110019
-    </div>
+<div class="network-credit">
+    Developed by <b>Azzah Fatimatu Zahrah</b><br>
+    240601110019
+</div>
+
 </div>
 """, unsafe_allow_html=True)
 
@@ -1100,7 +1101,7 @@ fig_compare.add_trace(go.Bar(
     x=comparison_df["Router gagal"],
     y=comparison_df["Komputer terhubung"],
     name="Komputer terhubung",
-    marker_color="#38D996",
+    marker_color="#F4D77A",
 ))
 
 fig_compare.add_trace(go.Bar(
