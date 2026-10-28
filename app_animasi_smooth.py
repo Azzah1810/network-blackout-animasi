@@ -141,33 +141,16 @@ hr {
 # 2. BANNER UTAMA
 # ==========================================
 
+
 st.markdown(
     """
     <div class="network-banner">
-        <div style="color:#C412FF; font-size:12px;
-                    letter-spacing:3px; font-weight:bold;">
-            GRAPH SIMULATION PROJECT
-        </div>
-
         <h1>NETWORK <span>BLACKOUT</span></h1>
-
-        <p style="font-size:18px;">
-            Simulasi dan Analisis Kegagalan Jaringan
-        </p>
-
+        <p>Simulasi dan Analisis Kegagalan Jaringan</p>
         <p>
             Pelajari dampak kegagalan router terhadap konektivitas
             komputer ke server melalui visualisasi graf interaktif.
-            Simulasi ini memperlihatkan perangkat yang masih terhubung
-            dan perangkat yang kehilangan akses ketika sebuah router gagal.
         </p>
-
-        <div style="color:#DDA5FF; font-size:13px; line-height:2;">
-            ◈ Visualisasi Graf &nbsp; | &nbsp;
-            ◈ Simulasi Kegagalan &nbsp; | &nbsp;
-            ◈ Analisis Konektivitas
-        </div>
-
         <div class="network-credit">
             Developed by <b>Azzah Fatimatu Zahrah</b><br>
             240601110019
