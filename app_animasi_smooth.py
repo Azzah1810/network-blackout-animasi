@@ -95,6 +95,7 @@ div.stButton > button:hover {
 # ==========================================
 
 st.markdown("""
+st.markdown("""
 <div class="network-banner">
     <div style="color:#C412FF; font-size:12px;
                 letter-spacing:3px; font-weight:bold;">
@@ -115,6 +116,15 @@ st.markdown("""
     <div style="color:#DDA5FF; font-size:13px;">
         ◈ Visualisasi Graf &nbsp; | &nbsp;
         ◈ Simulasi Kegagalan &nbsp; | &nbsp;
+        ◈ Analisis Konektivitas
+    </div>
+
+    <div class="network-credit">
+        Developed by <b>Azzah Fatimatu Zahrah</b><br>
+        240601110019
+    </div>
+</div>
+""", unsafe_allow_html=True)
         ◈ Analisis Konektivitas
     </div>
 
